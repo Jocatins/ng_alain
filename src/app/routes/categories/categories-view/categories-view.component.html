@@ -1,0 +1,11 @@
+<!-- <div class="modal-header">
+  <div class="modal-title">let {{ record.id }} see</div>
+</div>
+<nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+<div sv-container *ngIf="i">
+
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">Close</button>
+</div> -->
+<sf [schema]="schema" (formSubmit)="submit($event)"></sf>
