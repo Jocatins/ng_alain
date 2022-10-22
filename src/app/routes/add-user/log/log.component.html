@@ -4,42 +4,29 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <h3>Operating</h3>
+  <h3>Users Form</h3>
   <div class="mb-md">
     <button nz-button (click)="resetErrors()">Reset all errors</button>
   </div>
   <form nz-form #f="ngForm" se-container [errors]="ngModelErrors" gutter="32">
-    <se label="App Key" [error]="{ required: '请填写', pattern: '只能包含a-z, 0-9之间' }">
-      <input
-        type="text"
-        nz-input
-        [(ngModel)]="i.ak"
-        name="ak"
-        required
-        pattern="^[a-z0-9]*$"
-        placeholder="必填项，且只能包含a-z, 0-9之间"
-      />
+    <se label="First Name" [error]="{ required: 'required', pattern: 'a-z, 0-9' }">
+      <input type="text" nz-input [(ngModel)]="i.ak" name="ak" required pattern="^[a-z0-9]*$" placeholder="first Name" />
     </se>
-    <ng-template #appSecretRequired> 请填写，密钥<a (click)="msg.success('success')">生成</a>地址。 </ng-template>
-    <se label="App Secret" [error]="{ required: appSecretRequired, pattern: '只能包含0-9之间' }">
-      <input
-        type="text"
-        nz-input
-        [(ngModel)]="i.sk"
-        name="sk"
-        required
-        maxlength="32"
-        pattern="^[0-9]*$"
-        placeholder="必填项，且只能包含0-9之间"
-      />
+    <ng-template #appSecretRequired> App secret key<a (click)="msg.success('success')">生成</a>地址。 </ng-template>
+    <se label="Last Name" [error]="{ required: appSecretRequired, pattern: 'numbers 0-9' }">
+      <input type="text" nz-input [(ngModel)]="i.sk" name="sk" required maxlength="32" pattern="^[0-9]*$" placeholder="last Name" />
+    </se>
+    <se label="Email" [error]="{ required: appSecretRequired, pattern: 'a-z' }">
+      <input type="text" nz-input [(ngModel)]="i.ek" name="ek" required maxlength="32" pattern="^[0-9]*$" placeholder="Email" />
     </se>
     <se>
       <button nz-button nzType="primary" [disabled]="f.invalid">Save</button>
     </se>
   </form>
+
   <h3>Reactive</h3>
-  <form nz-form [formGroup]="validateForm" se-container gutter="32" [errors]="reactiveErrors">
-    <se label="App Key" [error]="{ required: 'Please input your username!', pattern: 'Incorrect format, muse be A' }">
+  <form nz-form [formGroup]="validateForm" se-container gutter="32" [errors]="reactiveErrors" #f="ngForm">
+    <se label="App Key" [error]="{ required: 'Please input your username!', pattern: 'Incorrect format, muse be j' }">
       <input formControlName="userName" nz-input placeholder="Username" />
     </se>
     <se label="App Secret" error="Please input your Password!">
@@ -50,3 +37,9 @@
     </se>
   </form>
 </nz-card>
+<g2-card [title]="'移动指标'" [bordered]="true" [total]="'¥ 126,560.00'" footer="日访问量 12,423" [avatar]="avatar" [action]="action">
+  <ng-template #avatar><img style="width: 56px; height: 56px" src="./assets/tmp/img/avatar.jpg" /></ng-template>
+  <ng-template #action>
+    <i nz-tooltip nzTooltipTitle="指标说明" nz-icon nzType="info-circle"></i>
+  </ng-template>
+</g2-card>

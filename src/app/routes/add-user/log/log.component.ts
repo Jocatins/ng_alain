@@ -9,12 +9,13 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class AddUserLogComponent {
   validateForm = new FormGroup({
-    userName: new FormControl<string | null>(null, [Validators.required, Validators.pattern(/A/)]),
+    userName: new FormControl<string | null>(null, [Validators.required, Validators.pattern(/j/)]),
     password: new FormControl(null, [Validators.required]),
+    email: new FormControl<string | null>(null, [Validators.required, Validators.pattern(/^[a-z0-9]*$/)]),
     remember: new FormControl(true)
   });
 
-  i: { ak?: string; sk?: string } = {};
+  i: { ak?: string; sk?: string; ek?: string } = {};
   ngModelErrors: SEErrorRefresh[] = [];
   reactiveErrors: SEErrorRefresh[] = [];
 

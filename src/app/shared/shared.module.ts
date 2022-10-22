@@ -3,6 +3,7 @@ import { NgModule, Type } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DelonACLModule } from '@delon/acl';
+import { G2BarModule } from '@delon/chart/bar';
 import { DelonFormModule } from '@delon/form';
 import { AlainThemeModule } from '@delon/theme';
 
@@ -34,8 +35,10 @@ const DIRECTIVES: Array<Type<void>> = [];
     ...SHARED_DELON_MODULES,
     ...SHARED_ZORRO_MODULES,
     // third libs
-    ...THIRDMODULES
+    ...THIRDMODULES,
+    G2BarModule
   ],
+
   declarations: [
     // your components
     ...COMPONENTS,
@@ -55,7 +58,8 @@ const DIRECTIVES: Array<Type<void>> = [];
     ...THIRDMODULES,
     // your components
     ...COMPONENTS,
-    ...DIRECTIVES
+    ...DIRECTIVES,
+    G2BarModule
   ]
 })
 export class SharedModule {}

@@ -1,0 +1,9 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="add()" nz-button nzType="primary">新建</button>
+  </ng-template>
+</page-header>
+<nz-card>
+  <button nz-button nzType="primary">Refresh</button>
+  <g2-bar height="200" [title]="'销售额趋势'" [data]="cartsData" (clickItem)="handleClick($event)"></g2-bar>
+</nz-card>

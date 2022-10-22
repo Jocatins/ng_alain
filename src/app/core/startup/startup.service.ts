@@ -86,17 +86,6 @@ export class StartupService {
             link: '/dashboard',
             icon: { type: 'icon', value: 'appstore' }
           }
-          // ,
-          // {
-          //   text: 'Profile',
-          //   link: '/productList',
-          //   icon: { type: 'icon', value: 'profile' }
-          // },
-          // {
-          //   text: 'Check-List',
-          //   link: '/home',
-          //   icon: { type: 'icon', value: 'cloud' }
-          // }
         ]
       },
       {
@@ -181,6 +170,11 @@ export class StartupService {
                 text: 'All Carts',
                 icon: { type: 'icon', value: 'profile' },
                 link: 'cart-items/log'
+              },
+              {
+                text: 'Charts',
+                icon: { type: 'icon', value: 'profile' },
+                link: 'cart-items/chart'
               }
             ]
           }

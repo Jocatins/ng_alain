@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { STColumn, STComponent, STData } from '@delon/abc/st';
+import { STColumn, STComponent, STData, STChange } from '@delon/abc/st';
 import { XlsxService } from '@delon/abc/xlsx';
 import { ModalHelper, Path, POST, _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -67,7 +67,14 @@ export class UsersUsersListComponent implements OnInit {
     { title: 'Id', index: 'id' },
     { title: 'First Name', index: 'name.firstname', render: 'name.firstname' },
     { title: 'Last Name', index: 'name.lastname', render: 'lastname' },
-    { title: 'Username', index: 'username', render: 'username' },
+    {
+      title: 'Username',
+      index: 'username',
+      render: 'username',
+      sort: {
+        compare: (a, b) => a.username - b.username
+      }
+    },
     { title: 'Email', index: 'email', render: 'email' },
     { title: 'Phone', index: 'phone', render: 'phone' },
     { title: 'City', index: 'address.city', render: 'city' },
@@ -75,7 +82,8 @@ export class UsersUsersListComponent implements OnInit {
       title: 'Actions',
       buttons: [
         {
-          text: `Edit`,
+          icon: 'edit',
+          text: 'Edit',
           iif: i => !i.edit,
           click: i => this.updateEdit(i, true)
         },
@@ -92,8 +100,13 @@ export class UsersUsersListComponent implements OnInit {
           click: i => this.updateEdit(i, false)
         },
         {
-          text: 'Delete',
+          icon: 'delete',
           type: 'static',
+          pop: {
+            title: 'Are you sure?',
+            okType: 'danger',
+            icon: 'star'
+          },
           click: (item: IUserList) => {
             console.log('clicked id', item?.id);
             fetch(`https://fakestoreapi.com/users/${item.id}`, {
@@ -129,6 +142,9 @@ export class UsersUsersListComponent implements OnInit {
   private updateEdit(i: STData, edit: boolean): void {
     this.st.setRow(i, { edit }, { refreshSchema: true });
   }
+  change(e: STChange): void {
+    console.log(e);
+  }
 
   ngOnInit(): void {
     this.allUsersList();
@@ -141,6 +157,7 @@ export class UsersUsersListComponent implements OnInit {
     fetch('https://fakestoreapi.com/users')
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         this.usersList = data;
       });
   }
