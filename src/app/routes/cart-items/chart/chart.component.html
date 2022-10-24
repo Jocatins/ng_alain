@@ -4,6 +4,16 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <button nz-button nzType="primary">Refresh</button>
-  <g2-bar height="200" [title]="'销售额趋势'" [data]="cartsData" (clickItem)="handleClick($event)"></g2-bar>
+  <div class="mb-md">
+    <button (click)="st.clear()" nz-button>Clear Data</button>
+    <button (click)="st.reload()" nz-button>Reload Data</button>
+    <button (click)="st.clearStatus(); st.reload()" nz-button>Clear Status</button>
+    <button (click)="st.setRow(0, { className: 'text-success' })" nz-button>Update Row ClassName</button>
+  </div>
+  <st #st [data]="cartsList" [columns]="columns"> </st>
+  <ng-template #customFilter let-f let-col="col" let-handle="handle">
+    <div class="p-lg">
+      <p>Custom body</p>
+    </div>
+  </ng-template>
 </nz-card>

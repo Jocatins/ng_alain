@@ -4,42 +4,36 @@
   </ng-template>
 </page-header>
 <nz-card>
-  <h3>Users Form</h3>
-  <div class="mb-md">
-    <button nz-button (click)="resetErrors()">Reset all errors</button>
-  </div>
-  <form nz-form #f="ngForm" se-container [errors]="ngModelErrors" gutter="32">
-    <se label="First Name" [error]="{ required: 'required', pattern: 'a-z, 0-9' }">
-      <input type="text" nz-input [(ngModel)]="i.ak" name="ak" required pattern="^[a-z0-9]*$" placeholder="first Name" />
-    </se>
-    <ng-template #appSecretRequired> App secret key<a (click)="msg.success('success')">生成</a>地址。 </ng-template>
-    <se label="Last Name" [error]="{ required: appSecretRequired, pattern: 'numbers 0-9' }">
-      <input type="text" nz-input [(ngModel)]="i.sk" name="sk" required maxlength="32" pattern="^[0-9]*$" placeholder="last Name" />
-    </se>
-    <se label="Email" [error]="{ required: appSecretRequired, pattern: 'a-z' }">
-      <input type="text" nz-input [(ngModel)]="i.ek" name="ek" required maxlength="32" pattern="^[0-9]*$" placeholder="Email" />
-    </se>
-    <se>
-      <button nz-button nzType="primary" [disabled]="f.invalid">Save</button>
-    </se>
-  </form>
+  <form nz-form [formGroup]="usersForm" (ngSubmit)="onSubmit()">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzValidatingTip="Validating...">
+        <input nz-input formControlName="userName" placeholder="Username" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Mobile</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="mobile" placeholder="mobile" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input formControlName="email" placeholder="email" type="email" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzDisableAutoTips nzErrorTip="Please input your password!">
+        <input nz-input type="password" formControlName="password" placeholder="password" />
+      </nz-form-control>
+    </nz-form-item>
 
-  <h3>Reactive</h3>
-  <form nz-form [formGroup]="validateForm" se-container gutter="32" [errors]="reactiveErrors" #f="ngForm">
-    <se label="App Key" [error]="{ required: 'Please input your username!', pattern: 'Incorrect format, muse be j' }">
-      <input formControlName="userName" nz-input placeholder="Username" />
-    </se>
-    <se label="App Secret" error="Please input your Password!">
-      <input formControlName="password" nz-input type="password" placeholder="Password" />
-    </se>
-    <se>
-      <button nz-button nzType="primary" [disabled]="!validateForm.valid">Log in</button>
-    </se>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="7" [nzSpan]="12">
+        <button nz-button nzType="primary">Submit</button>
+      </nz-form-control>
+    </nz-form-item>
   </form>
 </nz-card>
-<g2-card [title]="'移动指标'" [bordered]="true" [total]="'¥ 126,560.00'" footer="日访问量 12,423" [avatar]="avatar" [action]="action">
-  <ng-template #avatar><img style="width: 56px; height: 56px" src="./assets/tmp/img/avatar.jpg" /></ng-template>
-  <ng-template #action>
-    <i nz-tooltip nzTooltipTitle="指标说明" nz-icon nzType="info-circle"></i>
-  </ng-template>
-</g2-card>

@@ -12,6 +12,20 @@ import { IItemData } from './item';
 export class CartItemsLogComponent implements OnInit {
   editCache: { [key: string]: { edit: boolean; data: IItemData } } = {};
   listOfData: IItemData[] = [];
+  constructor(private http: _HttpClient, private modal: ModalHelper) {}
+
+  ngOnInit(): void {
+    const data = [];
+    for (let i = 0; i < 100; i++) {
+      data.push({
+        id: `${i}`,
+        name: `Nicholas ${i}`,
+        age: 32,
+        address: `Port Louis. ${i}`
+      });
+    }
+    this.allCartItems();
+  }
 
   startEdit(id: string): void {
     this.editCache[id].edit = true;
@@ -36,21 +50,6 @@ export class CartItemsLogComponent implements OnInit {
         data: { ...item }
       };
     });
-  }
-
-  constructor(private http: _HttpClient, private modal: ModalHelper) {}
-
-  ngOnInit(): void {
-    const data = [];
-    for (let i = 0; i < 100; i++) {
-      data.push({
-        id: `${i}`,
-        name: `Nicholas ${i}`,
-        age: 32,
-        address: `Port Louis. ${i}`
-      });
-    }
-    this.allCartItems();
   }
 
   add(): void {
