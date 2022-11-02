@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { STColumn, STComponent, STData, STChange } from '@delon/abc/st';
 import { XlsxService } from '@delon/abc/xlsx';
-import { ModalHelper, Path, POST, _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
+import { UsersService } from '../users.service';
 import { IUserList } from './users';
 
 @Component({
@@ -28,40 +28,14 @@ export class UsersUsersListComponent implements OnInit {
       };
     });
   params = { a: 1, b: 2, c: 3, d: 4 };
-  // params: { name?: string } = { name: 'asdf' };
 
-  // columns: STColumn[] = [
-  //   { title: 'Id', index: 'id' },
-  //   { title: 'First Name', index: 'name.firstname' },
-  //   { title: 'Last Name', index: 'name.lastname' },
-  //   { title: 'Username', index: 'username' },
-  //   { title: 'Email', index: 'email' },
-  //   { title: 'City', index: 'address.city' },
-  //   {
-  //     title: '',
-  //     buttons: [
-  //       {
-  //         text: 'Edit',
-  //         type: 'static',
-  //         click: (item: IUserList) => {
-  //           console.log('clicked', item);
-  //         }
-  //       },
-  //       {
-  //         text: 'Delete',
-  //         type: 'static',
-  //         click: (item: IUserList) => {
-  //           console.log('clicked', item?.id);
-  //           fetch(`https://fakestoreapi.com/users/${item.id}`, {
-  //             method: 'DELETE'
-  //           })
-  //             .then(res => res.json())
-  //             .then(json => console.log(json));
-  //         }
-  //       }
-  //     ]
-  //   }
-  // ];
+  public userId: number = 0;
+
+  constructor(private usersService: UsersService, private msg: NzMessageService, private xlsx: XlsxService) {}
+
+  ngOnInit(): void {
+    this.getAllUsers();
+  }
 
   columns: STColumn[] = [
     { title: 'Id', index: 'id' },
@@ -130,9 +104,6 @@ export class UsersUsersListComponent implements OnInit {
   ];
 
   // public usersList: IUserList[] = [];
-  public userId: number = 0;
-
-  constructor(private http: _HttpClient, private modal: ModalHelper, private msg: NzMessageService, private xlsx: XlsxService) {}
 
   private submit(i: STData): void {
     this.msg.success(JSON.stringify(this.st.pureItem(i)));
@@ -145,26 +116,22 @@ export class UsersUsersListComponent implements OnInit {
   change(e: STChange): void {
     console.log(e);
   }
+  getAllUsers(): void {
+    this.usersService.getData().subscribe(data => {
+      console.log('data', data);
+      this.usersList = data;
+    });
+  }
 
-  ngOnInit(): void {
-    this.allUsersList();
-  }
-  allUsersList(): void {
-    // this.http.get<IUserList[]>(`https://fakestoreapi.com/users`).subscribe(data => {
-    //   console.log(data);
-    //   this.usersList = data;
-    // });
-    fetch('https://fakestoreapi.com/users')
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        this.usersList = data;
-      });
-  }
   singleUser(): void {
     fetch('https://fakestoreapi.com/users/1')
       .then(res => res.json())
       .then(data => console.log(data));
+  }
+  singleData(id: number): void {
+    this.usersService.getSingleData(id).subscribe(response => {
+      console.log(response, id);
+    });
   }
 
   add(): void {
@@ -173,15 +140,7 @@ export class UsersUsersListComponent implements OnInit {
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
   }
-  // @POST(':id')
-  // save(@Path('id') id: number, @Body data: Object): Observable {
-  //   return;
-  // }
 
-  // @POST()
-  // save(@Payload data: {}): Observable {
-  //   return;
-  // }
   downloadFile(format: 'xlsx' | 'csv'): void {
     const data = [this.columns.map(i => i.title)];
     this.usersList.forEach(i => data.push(this.columns.map(c => i[c.index as string])));

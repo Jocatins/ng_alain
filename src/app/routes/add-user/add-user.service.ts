@@ -1,34 +1,15 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseApi, BaseUrl, Body, GET, Path, POST, Query, _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
 
 import { IUserList } from '../users/users-list/users';
 
-// @BaseUrl('https://fakestoreapi.com/users')
 @Injectable()
 export class AddUserService {
-  // GET Request
-  // ====================
-  // @GET(':id::type')
-  // get(@Path('id') id: number): Observable<T> {
-  //   return;
-  // }
-  // GET id request
-  // =====================
-  // @GET(':id')
-  // get(@Path('id') id: number): Observable {
-  //   return;
-  // }
-  // POST request
-  // ======================
-  // @POST(':id')
-  // save(@Path('id') id: number, @Body data: Object): Observable {
-  //   return;
-  // }
-  // @POST()
-  // save(@Payload data: {}): Observable {
-  //   return;
-  // }
+  private apiUrl: string = 'https://fakestoreapi.com/users';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: _HttpClient) {}
+  postData(data: IUserList): Observable<IUserList[]> {
+    return this.http.post<IUserList[]>(`${this.apiUrl}`, data);
+  }
 }

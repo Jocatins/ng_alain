@@ -1,9 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { LoadingService, LoadingType } from '@delon/abc/loading';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
 
+import { ProductsService } from '../products.service';
 import { IProductList } from './product';
 
 @Component({
@@ -11,9 +14,23 @@ import { IProductList } from './product';
   templateUrl: './product-list.component.html'
 })
 export class ProductsProductListComponent implements OnInit {
+  @ViewChild('st') private readonly st!: STComponent;
+@Input()
+public props: any;
+
+@Output()
+public propsChange: EventEmitter<string> = new EventEmitter();
+
+  private apiUrl: string = 'https://fakestoreapi.com/products';
+  public products: IProductList[] = [];
+
+  constructor(private http: _HttpClient, private productsService: ProductsService, private loadingSrv: LoadingService) {}
+  /* eslint-disable-next-line */
+  ngOnInit(): void {
+    this.getAllProducts();
+  }
   fileTypes = ['.xlsx', '.docx', '.pptx', '.pdf'];
 
-  url = `/`;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -22,7 +39,7 @@ export class ProductsProductListComponent implements OnInit {
       }
     }
   };
-  @ViewChild('st') private readonly st!: STComponent;
+
   columns: STColumn[] = [
     { title: 'Category', index: 'category' },
     { title: 'Description', index: 'description' },
@@ -33,37 +50,56 @@ export class ProductsProductListComponent implements OnInit {
     {
       title: '',
       buttons: [
-        { text: 'Edit', click: (item: any) => `/form/${item.id}` }
+        {
+          text: 'Edit',
+          click: (item: IProductList) => {
+            console.log(item.id);
+          }
+        }
         // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
       ]
     }
   ];
-  private apiUrl: string = 'https://fakestoreapi.com/products';
-  public products: IProductList[] = [];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper, private loadingSrv: LoadingService) {}
-  /* eslint-disable-next-line */
-  ngOnInit(): void {
-    // this.productSrv.getProducts().subscribe(data => (this.products = data));
-    // console.log('data', this.products);
-    this.loadData();
-  }
-  loadData(): void {
-    console.log('hello');
-    this.show('spin');
-    this.http.get<IProductList[]>(`https://fakestoreapi.com/products`).subscribe(data => {
-      console.log(data);
-      this.products = data;
-    });
-  }
   show(type: LoadingType): void {
     this.loadingSrv.open({ type });
     setTimeout(() => this.loadingSrv.close(), 1000 * 3);
   }
 
-  add(): void {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+  submitData(value: IProductList) {
+    let body = {
+      price: value.price,
+      title: value.title,
+      description: value.description
+    };
+  }
+  updateData(value: IProductList) {
+    let body = {
+      price: value.price,
+      title: value.title,
+      description: value.description
+    };
+  }
+
+  getAllProducts(): void {
+    this.productsService.getData().subscribe(data => {
+      console.log('data', data);
+      this.products = data;
+    });
+  }
+  postProducts(body: IProductList): void {
+    this.productsService.postData(body).subscribe(response => {
+      console.log(response);
+    });
+  }
+  updateProducts(body: IProductList, id: number): void {
+    this.productsService.updateData(body, 4).subscribe(response => {
+      console.log(response);
+    });
+  }
+  deleteProduct(id: any) {
+    this.productsService.deleteData(id).subscribe(response => {
+      console.log(response);
+    });
   }
 }

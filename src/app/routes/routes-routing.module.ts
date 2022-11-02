@@ -36,14 +36,7 @@ const routes: Routes = [
       { path: 'cart-items', loadChildren: () => import('./cart-items/cart-items.module').then(m => m.CartItemsModule) }
     ]
   },
-  // 空白布局
-  // {
-  //     path: 'blank',
-  //     component: LayoutBlankComponent,
-  //     children: [
-  //     ]
-  // },
-  // passport
+
   {
     path: 'passport',
     component: LayoutPassportComponent,
